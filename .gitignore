@@ -1,0 +1,25 @@
+# Binaries and object files
+*.o
+*.out
+*.exe
+a.out
+main
+
+# Build output directories
+bin/
+build/
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor and IDE configurations
+.vscode/
+.idea/
+*.swp
+*~
+
+# Temporary test files
+contents.txt.tmp
+test_out.txt
