@@ -1,105 +1,112 @@
-# Operating Systems Laboratory: Comprehensive Code, System Calls & Viva Reference
+# Operating Systems Laboratory: Exam Reference & Complete Code Manual
 
-This repository contains the complete laboratory curriculum for the **Operating Systems Laboratory (Academic Year 2026–27)**, Department of Computer Science and Engineering, NMAM Institute of Technology, Nitte.
+> **NMAM Institute of Technology, Nitte**  
+> **Department of Computer Science and Engineering**  
+> **Operating Systems Laboratory (Academic Year 2026–27)**  
+> Complete implementation, verified outputs, Gantt charts, and viva reference strictly organized in official lab examination order.
 
-Every experiment has been implemented, formatted, verified, and thoroughly documented with:
-- **Aim & Concept:** Core objective and OS system architecture.
-- **Required System Calls, Headers & Functions:** Complete mapping of POSIX system calls and standard headers.
-- **Complete Formatted Source Code:** Clean, standard-compliant, production-grade C and Shell code.
-- **Compilation & Run Instructions:** Exact GCC commands, linker flags (e.g., `-pthread`), and terminal execution steps.
-- **Detailed Step-by-Step Code Walkthrough:** Logic breakdown, memory state transitions, and concurrency safeguards.
-- **Sample Input & Expected Output:** Verified terminal outputs, including process tables and Gantt charts matching the lab manual.
-- **Viva Questions & Answers:** High-yield questions with concise, technically rigorous answers for lab exams.
-- **Comprehensive Theory Guide:** Dedicated [WALKTHROUGH.md](./WALKTHROUGH.md) explaining kernel transitions, copy-on-write, signals, and deadlock avoidance.
+---
+
+## 📋 Official Exam Question Paper
+
+Below is the official lab examination question set. All programs in this repository follow this exact numbering, ordering, and specification.
+
+<p align="center">
+  <img src="./docs/images/exam-question-paper.jpg" alt="Operating Systems Lab Official Exam Question Paper" width="700"/>
+</p>
 
 ---
 
 ## Table of Contents
-1. [Environment & System Prerequisites](#environment--system-prerequisites)
-2. [Quick Reference Index](#quick-reference-index)
+1. [Official Exam Order Index](#quick-reference-index-official-exam-order)
+2. [Environment & System Prerequisites](#environment--system-prerequisites)
 3. [Makefile & Automated Compilation](#makefile--automated-compilation)
 4. **Part A: System Calls, Processes & Synchronization**
-   - [Experiment A1: `exec()` System Call](#experiment-a1-exec-system-call)
-   - [Experiment A2: File Read using System Calls](#experiment-a2-file-read-using-system-calls)
-   - [Experiment A3: Child Processes using `fork()`](#experiment-a3-child-processes-using-fork)
-   - [Experiment A4: File Write using System Calls](#experiment-a4-file-write-using-system-calls)
-   - [Experiment A5: Signal Handling](#experiment-a5-signal-handling)
-   - [Experiment A6: Critical Section using Mutex Lock](#experiment-a6-critical-section-using-mutex-lock)
-   - [Experiment A7: Binary Semaphores](#experiment-a7-binary-semaphores)
+   - [Part A - Program 1: `execl()` System Call](#part-a---program-1-execl-system-call)
+   - [Part A - Program 2: Read Contents of a File using Unix System Calls](#part-a---program-2-read-contents-of-a-file-using-unix-system-calls)
+   - [Part A - Program 3: Create Five Child Processes using `fork()`](#part-a---program-3-create-five-child-processes-using-fork)
+   - [Part A - Program 4: Open File for Writing until Ctrl+D using Unix System Calls](#part-a---program-4-open-file-for-writing-until-ctrld-using-unix-system-calls)
+   - [Part A - Program 5: Signal Handler for SIGINT, SIGTERM, SIGHUP, SIGALRM, and SIGUSR1](#part-a---program-5-signal-handler-for-sigint-sigterm-sighup-sigalrm-and-sigusr1)
+   - [Part A - Program 6: Critical Section in Process Synchronization (Mutex)](#part-a---program-6-critical-section-in-process-synchronization-mutex)
+   - [Part A - Program 7: Semaphores using Binary Semaphores](#part-a---program-7-semaphores-using-binary-semaphores)
 5. **Part B: CPU Scheduling, Bounded Buffer & Deadlock Avoidance**
-   - [Experiment B1: First-Come, First-Served (FCFS) Scheduling](#experiment-b1-fcfs-scheduling)
-   - [Experiment B2: Shortest Job First (SJF) Scheduling](#experiment-b2-sjf-scheduling)
-   - [Experiment B3: Round Robin (RR) Scheduling](#experiment-b3-round-robin-scheduling)
-   - [Experiment B4: Producer-Consumer Simulation](#experiment-b4-producer-consumer-simulation)
-   - [Experiment B5: Banker's Algorithm for Deadlock Avoidance](#experiment-b5-bankers-algorithm-for-deadlock-avoidance)
+   - [Part B - Program 1: First Come First Serve (FCFS) Scheduling](#part-b---program-1-first-come-first-serve-fcfs-scheduling)
+   - [Part B - Program 2: Shortest Job First (SJF) Scheduling](#part-b---program-2-shortest-job-first-sjf-scheduling)
+   - [Part B - Program 3: Round Robin Scheduling](#part-b---program-3-round-robin-scheduling)
+   - [Part B - Program 4: Simulate Producer - Consumer Problem using Semaphores](#part-b---program-4-simulate-producer---consumer-problem-using-semaphores)
+   - [Part B - Program 5: Banker’s Deadlock Avoidance Algorithm](#part-b---program-5-bankers-deadlock-avoidance-algorithm)
 6. [Quick Viva Cheat Sheet](#quick-viva-cheat-sheet)
 7. [Troubleshooting & Common Errors](#troubleshooting--common-errors)
 8. [Comprehensive OS Theory & System Internals Walkthrough](./WALKTHROUGH.md)
 
 ---
 
-## Environment & System Prerequisites
+## Quick Reference Index (Official Exam Order)
 
-The programs in this repository utilize standard POSIX APIs and run on any POSIX-compliant environment (Linux, macOS, WSL on Windows).
+### Part A
 
-| Component | Minimum Version | Recommended Version | Verification Command | Notes |
-|---|---|---|---|---|
-| **Operating System** | Ubuntu 20.04+ / macOS 11+ | **Ubuntu 22.04 LTS / Debian 12** | `uname -a` | Standard lab environment |
-| **C Compiler** | GCC 9.0+ / Clang 11+ | **GCC 11.0+** | `gcc --version` | Supports `-Wall -Wextra -pthread` |
-| **Build Automation** | GNU Make 4.0+ | **GNU Make 4.3+** | `make --version` | Enables `make all` build |
-| **POSIX Shell** | Bash 4.0+ / Dash | **GNU Bash 5.0+** | `bash --version` | Required for `largest.sh` (A1) |
-| **Debugger / Tracer** | GDB 9.0+ / lldb | **GDB / strace** | `gdb --version` | For debugging & system tracing |
+| # | Official Exam Question Title | Core Concepts | Key System Calls / Functions | Source Code Folder |
+|:---:|---|---|---|:---:|
+| **1** | **`execl()` System Call** | Process replacement, shell execution | `execl()`, `access()`, `largest.sh` | [Part-A/Program-1-execl-system-call/](./Part-A/Program-1-execl-system-call/) |
+| **2** | **File Read using Unix System Calls** | Low-level unbuffered stream I/O | `open(O_RDONLY)`, `read()`, `write()`, `close()` | [Part-A/Program-2-file-read-system-calls/](./Part-A/Program-2-file-read-system-calls/) |
+| **3** | **Five Child Processes using `fork()`** | Process hierarchy, synchronization | `fork()`, `getpid()`, `getppid()`, `wait()`, `exit()` | [Part-A/Program-3-fork-child-processes/](./Part-A/Program-3-fork-child-processes/) |
+| **4** | **File Write until Ctrl+D using System Calls** | File creation, EOF capture | `open(O_CREAT\|O_WRONLY\|O_TRUNC)`, `read(0,...)`, `write()` | [Part-A/Program-4-file-write-system-calls/](./Part-A/Program-4-file-write-system-calls/) |
+| **5** | **Signal Handler (SIGINT, SIGTERM, etc.)** | Asynchronous software interrupts | `signal()`, `alarm()`, `kill`, `sleep()` | [Part-A/Program-5-signal-handling/](./Part-A/Program-5-signal-handling/) |
+| **6** | **Critical Section using Mutex Lock** | Multithreaded mutual exclusion | `pthread_create()`, `pthread_mutex_lock()`, `pthread_mutex_unlock()` | [Part-A/Program-6-mutex-critical-section/](./Part-A/Program-6-mutex-critical-section/) |
+| **7** | **Semaphores using Binary Semaphores** | Process/thread synchronization | `sem_init()`, `sem_wait()`, `sem_post()`, `sem_destroy()` | [Part-A/Program-7-binary-semaphores/](./Part-A/Program-7-binary-semaphores/) |
+
+### Part B
+
+| # | Official Exam Question Title | Core Concepts | Key Metrics / Logic | Source Code Folder |
+|:---:|---|---|---|:---:|
+| **1** | **First Come First Serve (FCFS) Scheduling** | Non-preemptive queue scheduling | $BT$, $WT$, $TAT$, $AWT$, $ATAT$, Gantt chart | [Part-B/Program-1-fcfs-scheduling/](./Part-B/Program-1-fcfs-scheduling/) |
+| **2** | **Shortest Job First (SJF) Scheduling** | Optimal non-preemptive scheduling | Ascending burst sort, arrival tie-breaker, Gantt chart | [Part-B/Program-2-sjf-scheduling/](./Part-B/Program-2-sjf-scheduling/) |
+| **3** | **Round Robin (RR) Scheduling** | Preemptive time-slicing | Time Quantum ($tq$), Cyclic ready queue, Gantt chart | [Part-B/Program-3-round-robin-scheduling/](./Part-B/Program-3-round-robin-scheduling/) |
+| **4** | **Producer - Consumer Problem Simulation** | Bounded buffer queue simulation | Circular array, modular arithmetic `(in+1)%bs` | [Part-B/Program-4-producer-consumer/](./Part-B/Program-4-producer-consumer/) |
+| **5** | **Banker’s Deadlock Avoidance Algorithm** | Multi-resource safety algorithm | Max, Allocation, Need matrices, Safe Sequence | [Part-B/Program-5-bankers-algorithm/](./Part-B/Program-5-bankers-algorithm/) |
 
 ---
 
-## Quick Reference Index
+## Environment & System Prerequisites
 
-| Exp # | Experiment Title | Core Concept | Key System Calls / Primitives | Source Code Link |
-|:---:|---|---|---|:---:|
-| **A1** | `exec()` System Call | Process Image Replacement | `execl()`, `access()`, Bash script | [Part-A/A1-exec-system-call/](./Part-A/A1-exec-system-call/) |
-| **A2** | File Read System Calls | Low-Level Unbuffered I/O | `open()`, `read()`, `write()`, `close()` | [Part-A/A2-file-read-system-calls/](./Part-A/A2-file-read-system-calls/) |
-| **A3** | Child Processes `fork()` | Process Creation & Synchronization | `fork()`, `getpid()`, `getppid()`, `wait()`, `exit()` | [Part-A/A3-fork-child-processes/](./Part-A/A3-fork-child-processes/) |
-| **A4** | File Write System Calls | File Creation & EOF Handling | `open(O_CREAT\|O_WRONLY\|O_TRUNC)`, `read()`, `write()` | [Part-A/A4-file-write-system-calls/](./Part-A/A4-file-write-system-calls/) |
-| **A5** | Signal Handling | Asynchronous Software Interrupts | `signal()`, `alarm()`, `kill`, `sleep()` | [Part-A/A5-signal-handling/](./Part-A/A5-signal-handling/) |
-| **A6** | Mutex Critical Section | POSIX Threads Mutual Exclusion | `pthread_create()`, `pthread_mutex_lock()`, `pthread_mutex_unlock()` | [Part-A/A6-mutex-critical-section/](./Part-A/A6-mutex-critical-section/) |
-| **A7** | Binary Semaphores | Semaphore Synchronization | `sem_init()`, `sem_wait()`, `sem_post()`, `sem_destroy()` | [Part-A/A7-binary-semaphores/](./Part-A/A7-binary-semaphores/) |
-| **B1** | FCFS Scheduling | Non-preemptive Queue Scheduling | Burst Time, Waiting Time, Turnaround Time, Gantt chart | [Part-B/B1-fcfs-scheduling/](./Part-B/B1-fcfs-scheduling/) |
-| **B2** | SJF Scheduling | Optimal Non-preemptive Scheduling | Selection Sort by Burst Time, Arrival tie-breaking | [Part-B/B2-sjf-scheduling/](./Part-B/B2-sjf-scheduling/) |
-| **B3** | Round Robin Scheduling | Preemptive Time-Sliced Scheduling | Time Quantum, Slicing, Cyclic Ready Queue | [Part-B/B3-round-robin-scheduling/](./Part-B/B3-round-robin-scheduling/) |
-| **B4** | Producer-Consumer | Bounded Buffer Simulation | Circular Buffer, Modular Arithmetic, Full/Empty checks | [Part-B/B4-producer-consumer/](./Part-B/B4-producer-consumer/) |
-| **B5** | Banker’s Algorithm | Deadlock Avoidance Safety Check | Max, Allocation, Available, Need Matrix, Safe Sequence | [Part-B/B5-bankers-algorithm/](./Part-B/B5-bankers-algorithm/) |
+| Component | Minimum Version | Recommended Version | Verification Command | Notes |
+|---|---|---|---|---|
+| **Operating System** | Ubuntu 20.04+ / macOS 11+ | **Ubuntu 22.04 LTS / Debian 12** | `uname -a` | Standard college lab OS |
+| **C Compiler** | GCC 9.0+ / Clang 11+ | **GCC 11.0+** | `gcc --version` | Supports `-Wall -Wextra -pthread` |
+| **Build Automation** | GNU Make 4.0+ | **GNU Make 4.3+** | `make --version` | Rapid batch compilation |
+| **POSIX Shell** | Bash 4.0+ / Dash | **GNU Bash 5.0+** | `bash --version` | For `largest.sh` (Part A, Program 1) |
 
 ---
 
 ## Makefile & Automated Compilation
 
-This repository includes a root [`Makefile`](./Makefile) enabling rapid compilation and testing of all experiments.
+A top-level [`Makefile`](./Makefile) allows compiling and testing all programs in both parts with a single terminal command:
 
 ```bash
-# Compile all 12 experiments in Part A and Part B at once:
+# Compile all 12 exam programs at once:
 make all
 
-# Clean all generated binary executables and temporary files:
+# Clean all generated binary executables:
 make clean
 
-# Compile a specific experiment individually:
-make Part-A/A1-exec-system-call/main
-make Part-A/A6-mutex-critical-section/main
-make Part-B/B5-bankers-algorithm/main
+# Build any specific exam program:
+make Part-A/Program-1-execl-system-call/main
+make Part-A/Program-6-mutex-critical-section/main
+make Part-B/Program-5-bankers-algorithm/main
 ```
 
 ---
 
 ## Part A: System Calls, Processes & Synchronization
 
-### Experiment A1: `exec()` System Call
+### Part A - Program 1: `execl()` System Call
 
-#### Aim & Concept
-Write a C program using the `exec()` system call family to:
-1. Read the name of a shell script from the keyboard.
-2. Execute that script using `/bin/sh`.
-3. Display an appropriate error message if the script cannot be found or executed.
-4. The shell script prompts the user to enter 3 numbers, finds and displays the greatest of the 3 numbers.
+#### 📝 Exam Question
+**Write a C program using the `execl()` system call that:**
+- **i.** Reads the name of a shell script from the keyboard.
+- **ii.** Executes that script using `/bin/sh`.
+- **iii.** Displays an appropriate error message if the script cannot be found or executed.
+- **iv.** The shell script should prompt the user to enter three numbers, find and display the greatest of the three numbers.
 
 #### Source Code
 
@@ -156,10 +163,10 @@ Error: cannot open script: No such file or directory
 
 ---
 
-### Experiment A2: File Read using System Calls
+### Part A - Program 2: Read Contents of a File using Unix System Calls
 
-#### Aim & Concept
-Write a C program that uses low-level POSIX system calls (`open`, `read`, `write`, `close`) to read the contents of a file and display them on the terminal. The program prompts the user to enter the filename from standard input.
+#### 📝 Exam Question
+**Write a C program that uses the appropriate Unix system calls to read the contents of a file and display it on the terminal. The program should prompt the user to enter the filename as input from the keyboard.**
 
 #### Source Code (`main.c`)
 ```c
@@ -215,10 +222,10 @@ Error: No such file or directory
 
 ---
 
-### Experiment A3: Child Processes using `fork()`
+### Part A - Program 3: Create Five Child Processes using `fork()`
 
-#### Aim & Concept
-Write a C program to create exactly five child processes sequentially using the system call `fork()` and display their IDs (`getpid()` and `getppid()`). The parent waits for all children before terminating.
+#### 📝 Exam Question
+**Write the program to create five Child Processes using system call fork() and display their ids.**
 
 #### Source Code (`main.c`)
 ```c
@@ -277,10 +284,10 @@ Parent pid 413 after finishing all Child execution
 
 ---
 
-### Experiment A4: File Write using System Calls
+### Part A - Program 4: Open File for Writing until Ctrl+D using Unix System Calls
 
-#### Aim & Concept
-Write a C program using unique system calls to open a file for writing (create it if it does not exist with permissions `0644`). The program reads text from the keyboard via file descriptor 0 and writes it into the file until `Ctrl+D` (EOF).
+#### 📝 Exam Question
+**Write a C program using Unix system calls to open a file for writing (create it if it does not exist). The program should read text from the keyboard and write it into file until Ctrl+D.**
 
 #### Source Code (`main.c`)
 ```c
@@ -339,10 +346,10 @@ hello world
 
 ---
 
-### Experiment A5: Signal Handling
+### Part A - Program 5: Signal Handler for SIGINT, SIGTERM, SIGHUP, SIGALRM, and SIGUSR1
 
-#### Aim & Concept
-Write a C program that registers a signal handler for `SIGINT`, `SIGTERM`, `SIGHUP`, `SIGALRM`, and `SIGUSR1`. The handler receives signals and performs diagnostic logging.
+#### 📝 Exam Question
+**Write a C program that registers a signal handler for SIGINT, SIGTERM, SIGHUP, SIGALRM, and SIGUSR1. The handler should receive each signal and perform some operation.**
 
 #### Source Code (`main.c`)
 ```c
@@ -421,10 +428,10 @@ int main()
 
 ---
 
-### Experiment A6: Critical Section using Mutex Lock
+### Part A - Program 6: Critical Section in Process Synchronization (Mutex)
 
-#### Aim & Concept
-Write a multithreaded C program to demonstrate process synchronization and critical section protection using a Mutex Lock (`pthread_mutex_t`). Three threads concurrently increment a shared global counter.
+#### 📝 Exam Question
+**Write a C program to demonstrate Critical section in process synchronization.**
 
 #### Source Code (`main.c`)
 ```c
@@ -489,10 +496,10 @@ Final value of shared counter: 3
 
 ---
 
-### Experiment A7: Binary Semaphores
+### Part A - Program 7: Semaphores using Binary Semaphores
 
-#### Aim & Concept
-Write a multithreaded C program to demonstrate synchronization using a **Binary Semaphore** (`sem_t`) initialized to 1. Threads enter and leave the critical section using `sem_wait()` and `sem_post()`.
+#### 📝 Exam Question
+**Write a C program to demonstrate Semaphores using binary semaphores.**
 
 #### Source Code (`main.c`)
 ```c
@@ -553,10 +560,10 @@ All threads have finished execution.
 
 ## Part B: CPU Scheduling, Bounded Buffer & Deadlock Avoidance
 
-### Experiment B1: FCFS Scheduling
+### Part B - Program 1: First Come First Serve (FCFS) Scheduling
 
-#### Aim & Concept
-Write a C program to implement the **First-Come, First-Served (FCFS)** CPU scheduling algorithm to determine Total Waiting Time, Average Waiting Time, Total Turnaround Time, and Average Turnaround Time.
+#### 📝 Exam Question
+**Write a C program to implement First Come First Serve Scheduling algorithm to determine total waiting time, average waiting time, total turn around time and average turnaround time.**
 
 #### Source Code (`main.c`)
 ```c
@@ -646,10 +653,10 @@ Average Turn Around Time = 8.25
 
 ---
 
-### Experiment B2: SJF Scheduling
+### Part B - Program 2: Shortest Job First (SJF) Scheduling
 
-#### Aim & Concept
-Write a C program to implement the **Shortest Job First (SJF)** non-preemptive CPU scheduling algorithm. Orders processes by ascending CPU burst times and breaks ties using original PID arrival order.
+#### 📝 Exam Question
+**Write a C program to implement Shortest Job First Scheduling algorithm to determine total waiting time, average waiting time, total turn around time and average turnaround time.**
 
 #### Source Code (`main.c`)
 ```c
@@ -753,10 +760,10 @@ Average Turn Around Time = 8.33
 
 ---
 
-### Experiment B3: Round Robin Scheduling
+### Part B - Program 3: Round Robin Scheduling
 
-#### Aim & Concept
-Write a C program to implement the **Round Robin (RR)** preemptive CPU scheduling algorithm with a fixed Time Quantum (`tq`). Computes individual and average waiting and turnaround times.
+#### 📝 Exam Question
+**Write a C program to implement Round Robin Scheduling algorithm to determine total waiting time, average waiting time, total turn around time and average turnaround time.**
 
 #### Source Code (`main.c`)
 ```c
@@ -866,10 +873,10 @@ Average Turn Around Time: 10.00 ms
 
 ---
 
-### Experiment B4: Producer-Consumer Simulation
+### Part B - Program 4: Simulate Producer - Consumer Problem using Semaphores
 
-#### Aim & Concept
-Write a C program to simulate the **Producer-Consumer Problem** using circular queue buffers and boundary condition checks (`it == bs` for full, `it == 0` for empty).
+#### 📝 Exam Question
+**Write a C program to simulate producer – consumer problem using semaphores.**
 
 #### Source Code (`main.c`)
 ```c
@@ -962,13 +969,10 @@ Enter the choice3
 
 ---
 
-### Experiment B5: Banker’s Algorithm for Deadlock Avoidance
+### Part B - Program 5: Banker’s Deadlock Avoidance Algorithm
 
-#### Aim & Concept
-Write a C program to implement the **Banker’s Algorithm** (Safety Algorithm) for deadlock avoidance. Given `p` processes, `r` resources, `MAX` matrix, `Allocation` matrix, and `Available` vector:
-1. Calculates `Need[i][j] = MAX[i][j] - Allocation[i][j]`.
-2. Verifies whether the system is in a **Safe State**.
-3. Computes and outputs the **Safe Sequence**.
+#### 📝 Exam Question
+**Write a C program to demonstrate Bankers Deadlock avoidance algorithm.**
 
 #### Source Code (`main.c`)
 ```c
@@ -1078,7 +1082,7 @@ Safe Sequence is: P1	 P3	 P4	 P5	 P2
 | Question | Short Answer |
 |---|---|
 | **What does `fork()` return?** | Returns `0` to child process, child `PID` to parent process, and `-1` on failure. |
-| **Why doesn't `exec()` return?** | Because `exec()` completely overwrites the calling process's address space with the new binary image. |
+| **Why doesn't `execl()` return?** | Because `execl()` completely overwrites the calling process's address space with the new binary image. |
 | **What is a Zombie Process?** | A process that has finished execution via `exit()` but still occupies a slot in the process table because its parent hasn't reaped it via `wait()`. |
 | **What is an Orphan Process?** | A process whose parent has terminated; it is automatically adopted by `init` / `systemd` (PID 1). |
 | **Difference between Mutex and Semaphore?** | A Mutex has **ownership** (only the locker can unlock). A Semaphore has no ownership and supports signaling (`sem_wait` / `sem_post`). |
@@ -1095,9 +1099,9 @@ Safe Sequence is: P1	 P3	 P4	 P5	 P2
    - **Fix:** Add `-lpthread` or `-pthread` to your GCC command: `gcc main.c -pthread`.
 2. **Duplicate print statements after `fork()`**
    - **Fix:** Call `fflush(stdout);` immediately before calling `fork()` to flush user-space stdio buffers.
-3. **`Error: cannot open script: No such file or directory` (A1)**
+3. **`Error: cannot open script: No such file or directory` (Part A, Program 1)**
    - **Fix:** Ensure `largest.sh` is in the current working directory and has read/execution permissions: `chmod +x largest.sh`.
-4. **`sem_init is deprecated` warning on macOS (A7)**
+4. **`sem_init is deprecated` warning on macOS (Part A, Program 7)**
    - **Explanation:** macOS Darwin kernel favors named semaphores (`sem_open`). The standard `sem_init` POSIX call runs natively without warnings on Linux (Ubuntu / Debian / WSL).
 
 ---
